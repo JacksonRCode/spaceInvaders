@@ -5,8 +5,10 @@
 //  Created by Jackson Reid on 2024-06-16.
 //
 #include "Game.hpp"
+#include "TextureManager.hpp"
 
 SDL_Texture* spaceShipTxtr;
+TextureManager* tex = new TextureManager();
 SDL_Rect srcR, destR;
 
 Game::Game() {}
@@ -39,10 +41,7 @@ void Game::init(const char *title, int xPos, int yPos, int screenWidth, int scre
     }
     
     
-    SDL_Surface* surface = IMG_Load("spacechip.png");
-    spaceShipTxtr = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-    
+    spaceShipTxtr = tex->loadTexture(renderer, "spacechip.png");
 }
 void Game::handleEvents() {
     SDL_Event event;
@@ -62,7 +61,8 @@ void Game::update(int screen_width, int screen_height) {
     // Size of spaceship
     destR.h = 48;
     destR.w = 48;
-    destR.x = (screen_width / 2) - 18;
+//    destR.x = (screen_width / 2) - 18;
+    destR.x = count;
     destR.y = screen_height - 64;
 }
     
