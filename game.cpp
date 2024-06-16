@@ -6,6 +6,9 @@
 //
 #include "Game.hpp"
 
+SDL_Texture* spaceShipTxtr;
+SDL_Rect srcR, destR;
+
 Game::Game() {}
 Game::~Game() {}
 
@@ -34,6 +37,12 @@ void Game::init(const char *title, int xPos, int yPos, int screenWidth, int scre
         std::cout << "Renderer creation failed. SDL_ERROR: " << SDL_GetError() << std::endl;
         isRunning =  false;
     }
+    
+    
+    SDL_Surface* surface = IMG_Load("spacechip.png");
+    spaceShipTxtr = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+    
 }
 void Game::handleEvents() {
     SDL_Event event;
@@ -48,20 +57,22 @@ void Game::handleEvents() {
     }
 }
 
-void Game::update() {
+void Game::update(int screen_width, int screen_height) {
     count++;
-    if ((count % 1000) == 0) {
-        
-        std::cout << count << std::endl;
-    }
+    // Size of spaceship
+    destR.h = 48;
+    destR.w = 48;
+    destR.x = (screen_width / 2) - 18;
+    destR.y = screen_height - 64;
 }
     
 
 void Game::render() {
-    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
+    SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
     SDL_RenderClear(renderer);
 
     // Add stuff to render here
+    SDL_RenderCopy(renderer, spaceShipTxtr, NULL, &destR);
     SDL_RenderPresent(renderer);
 }
 

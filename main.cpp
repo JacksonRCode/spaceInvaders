@@ -21,7 +21,7 @@ int main(int argc, const char * argv[]) {
     while (game->running()) {
         
         game->handleEvents();
-        game->update();
+        game->update(SCREEN_WIDTH, SCREEN_HEIGHT);
         game->render();
         
     }

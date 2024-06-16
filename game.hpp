@@ -2,6 +2,7 @@
 #define Game_hpp
 
 #include <SDL2/SDL.h>
+#include <SDL2_image/SDL_image.h>
 #include <iostream>
 #include <stdio.h>
 
@@ -13,7 +14,7 @@ public:
     
     void init(const char* title, int xPos, int yPos, int screenWidth, int screenHeight, bool fullScreen);
     void handleEvents();
-    void update();
+    void update(int screen_width, int screen_height);
     void render();
     void clean();
     
