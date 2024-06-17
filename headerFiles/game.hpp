@@ -12,19 +12,20 @@ public:
     Game();
     ~Game();
     
-    void init(const char* title, int xPos, int yPos, int screenWidth, int screenHeight, bool fullScreen);
-    void handleEvents();
-    void update(int screen_width, int screen_height);
-    void render();
-    void clean();
+    void Init(const char* title, int xPos, int yPos, int screenWidth, int screenHeight, bool fullScreen);
     
-    bool running();
+    void HandleEvents();
+    void Update();
+    void Render();
+    void Clean();
+    bool Running();
+    
+    static SDL_Renderer* renderer;
     
 private:
     int count;
     bool isRunning;
     SDL_Window *window;
-    SDL_Renderer *renderer;
 };
 
 #endif /* Game_hpp */

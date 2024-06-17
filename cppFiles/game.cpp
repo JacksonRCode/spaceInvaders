@@ -6,15 +6,18 @@
 //
 #include "Game.hpp"
 #include "TextureManager.hpp"
+#include "GameObject.hpp"
+#include "Map.hpp"
 
-SDL_Texture* spaceShipTxtr;
-TextureManager* tex = new TextureManager();
-SDL_Rect srcR, destR;
-
+SDL_Renderer* Game::renderer = nullptr;
 Game::Game() {}
 Game::~Game() {}
 
-void Game::init(const char *title, int xPos, int yPos, int screenWidth, int screenHeight, bool fullscreen) {
+GameObject* ship;
+GameObject* enemy;
+Map* map;
+
+void Game::Init(const char *title, int xPos, int yPos, int screenWidth, int screenHeight, bool fullscreen) {
     
     isRunning = true;
     
@@ -40,10 +43,13 @@ void Game::init(const char *title, int xPos, int yPos, int screenWidth, int scre
         isRunning =  false;
     }
     
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
     
-    spaceShipTxtr = tex->loadTexture(renderer, "spacechip.png");
+    ship = new GameObject("grnSpaceShip.png", 100, 100);
+    enemy = new GameObject("redDevil.png", 50, 50);
+    map = new Map();
 }
-void Game::handleEvents() {
+void Game::HandleEvents() {
     SDL_Event event;
     SDL_PollEvent(&event);
     switch (event.type) {
@@ -56,33 +62,28 @@ void Game::handleEvents() {
     }
 }
 
-void Game::update(int screen_width, int screen_height) {
-    count++;
-    // Size of spaceship
-    destR.h = 48;
-    destR.w = 48;
-//    destR.x = (screen_width / 2) - 18;
-    destR.x = count;
-    destR.y = screen_height - 64;
+void Game::Update() {
+//    count++;
+    ship->Update();
+    enemy->Update();
 }
     
 
-void Game::render() {
-    SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
+void Game::Render() {
     SDL_RenderClear(renderer);
-
-    // Add stuff to render here
-    SDL_RenderCopy(renderer, spaceShipTxtr, NULL, &destR);
+    map->DrawMap();
+    ship->Render();
+    enemy->Render();
     SDL_RenderPresent(renderer);
 }
 
-void Game::clean() {
+void Game::Clean() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
     std::cout << "Game Cleaned" << std::endl;
 }
 
-bool Game::running() {
+bool Game::Running() {
     return isRunning;
 }

@@ -21,16 +21,16 @@ int main(int argc, const char * argv[]) {
     
     game = new Game();
     
-    game->init(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
+    game->Init(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
     
-    while (game->running()) {
+    while (game->Running()) {
         
         // GetTicks() gets time since sdl was first initialized
         frameStart = SDL_GetTicks();
         
-        game->handleEvents();
-        game->update(SCREEN_WIDTH, SCREEN_HEIGHT);
-        game->render();
+        game->HandleEvents();
+        game->Update();
+        game->Render();
         
         // How long its taken to handle events, update, and render
         frameTime = SDL_GetTicks() - frameStart;
@@ -42,7 +42,7 @@ int main(int argc, const char * argv[]) {
         
     }
     
-    game->clean();
+    game->Clean();
     
     return 0;
 }
