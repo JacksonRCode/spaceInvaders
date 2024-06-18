@@ -6,16 +6,19 @@
 //
 #include "Game.hpp"
 #include "TextureManager.hpp"
-#include "GameObject.hpp"
 #include "Map.hpp"
+#include "Components.hpp"
+
+Map* map;
 
 SDL_Renderer* Game::renderer = nullptr;
+
+Manager manager;
+auto& ship(manager.addEntity());
+
 Game::Game() {}
 Game::~Game() {}
 
-GameObject* ship;
-GameObject* enemy;
-Map* map;
 
 void Game::Init(const char *title, int xPos, int yPos, int screenWidth, int screenHeight, bool fullscreen) {
     
@@ -45,9 +48,10 @@ void Game::Init(const char *title, int xPos, int yPos, int screenWidth, int scre
     
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
     
-    ship = new GameObject("grnSpaceShip.png", 100, 100);
-    enemy = new GameObject("redDevil.png", 50, 50);
     map = new Map();
+    
+    ship.addComponent<PositionComponent>(0, 30);
+    ship.addComponent<SpriteComponent>("grnSpaceShip.png");
 }
 void Game::HandleEvents() {
     SDL_Event event;
@@ -63,17 +67,20 @@ void Game::HandleEvents() {
 }
 
 void Game::Update() {
-//    count++;
-    ship->Update();
-    enemy->Update();
+
+    manager.refresh();
+    manager.update();
+    
+    if(ship.getComponent<PositionComponent>().x() > 100) {
+        ship.getComponent<SpriteComponent>().setTexture("redDevil.png");
+    }
 }
     
 
 void Game::Render() {
     SDL_RenderClear(renderer);
     map->DrawMap();
-    ship->Render();
-    enemy->Render();
+    manager.draw();
     SDL_RenderPresent(renderer);
 }
 
