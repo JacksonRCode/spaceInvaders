@@ -11,10 +11,10 @@
 #include "Vector2D.hpp"
 
 Map* map;
+Manager manager;
 
 SDL_Renderer* Game::renderer = nullptr;
-
-Manager manager;
+SDL_Event Game::event;
 auto& ship(manager.addEntity());
 
 Game::Game() {}
@@ -53,9 +53,12 @@ void Game::Init(const char *title, int xPos, int yPos, int screenWidth, int scre
     
     ship.addComponent<TransformComponent>();
     ship.addComponent<SpriteComponent>("grnSpaceShip.png");
+    ship.addComponent<KeyboardController>();
 }
 void Game::HandleEvents() {
-    SDL_Event event;
+   
+    
+    
     SDL_PollEvent(&event);
     switch (event.type) {
         case SDL_QUIT:
@@ -71,11 +74,6 @@ void Game::Update() {
 
     manager.refresh();
     manager.update();
-    ship.getComponent<TransformComponent>().position.Add(Vector2D(5, 0));
-    
-    if(ship.getComponent<TransformComponent>().position.x > 100) {
-        ship.getComponent<SpriteComponent>().setTexture("redDevil.png");
-    }
 }
     
 

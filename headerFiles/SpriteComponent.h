@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Components.hpp"
+#include "TextureManager.hpp"
 #include <SDL2/SDL.h>
 
 class SpriteComponent : public Component {
