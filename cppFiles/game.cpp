@@ -8,6 +8,7 @@
 #include "TextureManager.hpp"
 #include "Map.hpp"
 #include "Components.hpp"
+#include "Vector2D.hpp"
 
 Map* map;
 
@@ -50,7 +51,7 @@ void Game::Init(const char *title, int xPos, int yPos, int screenWidth, int scre
     
     map = new Map();
     
-    ship.addComponent<PositionComponent>(0, 30);
+    ship.addComponent<TransformComponent>();
     ship.addComponent<SpriteComponent>("grnSpaceShip.png");
 }
 void Game::HandleEvents() {
@@ -70,8 +71,9 @@ void Game::Update() {
 
     manager.refresh();
     manager.update();
+    ship.getComponent<TransformComponent>().position.Add(Vector2D(5, 0));
     
-    if(ship.getComponent<PositionComponent>().x() > 100) {
+    if(ship.getComponent<TransformComponent>().position.x > 100) {
         ship.getComponent<SpriteComponent>().setTexture("redDevil.png");
     }
 }
